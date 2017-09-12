@@ -1,0 +1,27 @@
+Options -MultiViews
+RewriteEngine on
+DirectoryIndex public/index.php public/index.html
+RewriteBase /public/
+
+# Allow any files or directories that exist to be displayed directly
+RewriteCond ${REQUEST_URI} ^.+$
+RewriteCond %{REQUEST_FILENAME} \.(gif|jpe?g|png|js|css|swf|php|ico|txt|pdf|xml)$ [OR]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -l
+RewriteRule ^ - [L]
+
+RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+RewriteRule ^ %1 [L,NE,R=302]
+#RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
+#php_value upload_max_filesize 500M
+#php_value post_max_size 500M
+#php_value max_input_time 300
+#php_value max_execution_time 300
+
+RewriteCond %{REQUEST_FILENAME] !-d
+RewriteCond %{REQUEST_FILENAME] !-f
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
