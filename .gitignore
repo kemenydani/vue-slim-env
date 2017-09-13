@@ -13,3 +13,4 @@ yarn-error.log
 /frontend/admin-spa/node_modules/
 /public/admin-spa/dist/
 /node_modules/
+/public/public-spa/dist/
