@@ -4,8 +4,8 @@ var webpack = require('webpack')
 module.exports = {
   entry: './resources/admin-app/src/main.js',
   output: {
-    path: path.resolve(__dirname, './public/dist-admin'),
-    publicPath: '/public/dist-admin/',
+    path: path.resolve(__dirname, './public/admin/dist'),
+    publicPath: '/public/admin/dist/',
     filename: 'build.js'
   },
   module: {
