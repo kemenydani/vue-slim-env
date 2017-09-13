@@ -8,22 +8,22 @@ import List    from '../components/user/list.vue'
 const Index = resolve => {
     require.ensure(['../components/user/index.vue'], () => {
         resolve(require('../components/user/index.vue'));
-    })
+    }, "user.index")
 }
 const Factory = resolve => {
     require.ensure(['../components/user/factory.vue'], () => {
         resolve(require('../components/user/factory.vue'));
-    })
+    }, "user.factory")
 }
 const View = resolve => {
     require.ensure(['../components/user/view.vue'], () => {
         resolve(require('../components/user/view.vue'));
-    })
+    }, "user.view")
 }
 const List = resolve => {
     require.ensure(['../components/user/list.vue'], () => {
         resolve(require('../components/user/list.vue'));
-    })
+    }, "user.list")
 }
 
 export default

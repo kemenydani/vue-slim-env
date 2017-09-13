@@ -1,19 +1,14 @@
 var path = require('path')
 var webpack = require('webpack')
 
-module.exports = [{
-    entry: './frontend/public-spa/src/main.js',
-    output: {
-        path: path.resolve(__dirname, '../../public/public-spa/dist'),
-        publicPath: '../../public/public-spa/dist/',
-        filename: 'build.js'
-    }
-  }, {
-  entry: './frontend/admin-spa/src/main.js',
+module.exports = {
+  entry: {
+      admin : './frontend/admin-spa/src/main.js',
+  },
   output: {
-    path: path.resolve(__dirname, '../../public/admin-spa/dist'),
-    publicPath: '../../public/admin-spa/dist/',
-    filename: 'build.js'
+          path: path.resolve(__dirname, './public/admin-spa/dist/'),
+          filename: '[name].build.js',
+          chunkFilename: "admin.[name].chunk.js"
   },
   module: {
     rules: [
@@ -58,7 +53,7 @@ module.exports = [{
     hints: false
   },
   devtool: '#eval-source-map'
-}]
+}
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
