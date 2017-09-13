@@ -12,3 +12,4 @@ yarn-error.log
 *.njsproj
 *.sln
 /public/admin/dist/
+/frontend/admin-spa/node_modules/
