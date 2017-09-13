@@ -55,10 +55,9 @@ module.exports = [
         },
         devtool: '#eval-source-map'
     },
-    // //
     {
         entry: {
-            admin : './resources/js/admin-spa/main.js',
+            public : './resources/js/admin-spa/main.js',
         },
         output: {
             path: path.resolve(__dirname, './public/admin-spa/dist/'),
@@ -109,11 +108,7 @@ module.exports = [
         },
         devtool: '#eval-source-map'
     }
-]
-
-
-
-
+];
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
@@ -125,13 +120,17 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
+        sourceMap: false,
+        compress: {
+            warnings: false,
+        },
+        output: {
+            comments: false,
+        },
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
+    }),
+    new webpack.optimize.AggressiveMergingPlugin()
   ])
 }
