@@ -8,10 +8,10 @@
     },
     "autoload": {
         "psr-4": {
-            "core\\": "app/core/",
-            "controllers\\": "app/controllers/",
-            "configs\\": "app/configs/",
-            "models\\": "app/models/"
+            "core\\": "backend/core/",
+            "controllers\\": "backend/controllers/",
+            "configs\\": "backend/configs/",
+            "models\\": "backend/models/"
         }
     },
     "license": "MIT",

@@ -22,7 +22,7 @@ $app->options('/{routes:.+}', function (Request $request, Response $response, $a
 $app->get('/', function (Request $request, Response $response) {
     //$response->getBody()->write("Home");
     //return $response;
-    echo file_get_contents("./dist-admin/index.html");
+    echo file_get_contents("./admin-spa/index.html");
     return $response;
 });
 
