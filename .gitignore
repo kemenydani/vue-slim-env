@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 /vendor/
-/node_modules/
 
 .DS_Store
 npm-debug.log
@@ -11,5 +10,5 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
-/public/admin/dist/
 /frontend/admin-spa/node_modules/
+/public/admin-spa/dist/
