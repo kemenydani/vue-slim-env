@@ -133,6 +133,7 @@ if (process.env.NODE_ENV === 'production') {
                 minimize: true
             }),
             new webpack.optimize.AggressiveMergingPlugin()
+
         ])
     }
 }
