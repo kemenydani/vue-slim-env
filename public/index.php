@@ -26,6 +26,13 @@ $app->get('/', function (Request $request, Response $response) {
     return $response;
 });
 
+$app->get('/admin/', function (Request $request, Response $response) {
+    //$response->getBody()->write("Home");
+    //return $response;
+    echo file_get_contents("./admin-spa/index.html");
+    return $response;
+});
+
 $app->group('/api/', function () {
 
     // Get All Customers

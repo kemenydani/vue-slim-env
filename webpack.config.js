@@ -45,7 +45,11 @@ var configs = [
         },
         devServer: {
             contentBase: './public/public-spa/',
-            historyApiFallback: true,
+            historyApiFallback: {
+                rewrites: [
+                    { from: /^\/$/, to: 'build.html' },
+                ],
+            },
             noInfo: true,
             hot: true,
             open: true,
@@ -99,7 +103,11 @@ var configs = [
         },
         devServer: {
             contentBase: './public/admin-spa/',
-            historyApiFallback: true,
+            historyApiFallback: {
+                rewrites: [
+                    { from: /^\/$/, to: 'build.html' },
+                ],
+            },
             noInfo: true,
             hot: true,
             open: true,

@@ -17,15 +17,15 @@ Vue.use(Vuetify)
 const router = new VueRouter({
     routes: routes
 })
-
+/*
 router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && false/* check if authenticated here */ ) {
+    if (to.meta.requiresAuth && false ) {
         next({ name: 'login' })
     } else {
         next()
     }
 })
-
+*/
 new Vue({
     el: '#app',
     render: h => h(App),
