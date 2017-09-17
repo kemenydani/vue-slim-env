@@ -44,7 +44,7 @@ var configs = [
             }
         },
         devServer: {
-            contentBase: './public/public-spa/dist/',
+            contentBase: './public/public-spa/',
             historyApiFallback: true,
             noInfo: true,
             hot: true,
@@ -98,7 +98,7 @@ var configs = [
             }
         },
         devServer: {
-            contentBase: './public/admin-spa/dist/',
+            contentBase: './public/admin-spa/',
             historyApiFallback: true,
             noInfo: true,
             hot: true,

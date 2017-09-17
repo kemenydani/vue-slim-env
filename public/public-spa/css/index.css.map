@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,UAAW;EACT,UAAU,ECHI,OAAO;EDIrB,KAAK,EAAE,KAAK",
+"sources": ["../../../resources/scss/public-spa/_build.scss","../../../resources/scss/public-spa/_colors.scss"],
+"names": [],
+"file": "index.css"
+}
