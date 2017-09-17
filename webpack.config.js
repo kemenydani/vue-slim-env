@@ -1,15 +1,16 @@
 var path = require('path')
 var webpack = require('webpack')
 
-module.exports = [
+var configs = [
     {
+        name: 'config:public',
         entry: {
             public : './resources/js/public-spa/main.js',
         },
         output: {
-            path: path.resolve(__dirname, './public/public-spa/dist/'),
-            filename: '[name].build.js',
-            chunkFilename: "public.[name].chunk.js"
+            path: path.resolve(__dirname, './public/public-spa/dist'),
+            publicPath: './public/public-spa/dist/',
+            filename: 'public.build.js',
         },
         module: {
             rules: [
@@ -18,13 +19,9 @@ module.exports = [
                     loader: 'vue-loader',
                     options: {
                         loaders: {
-                            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-                            // the "scss" and "sass" values for the lang attribute to the right configs here.
-                            // other preprocessors should work out of the box, no loader config like this necessary.
                             'scss': 'vue-style-loader!css-loader!sass-loader',
                             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
                         }
-                        // other vue-loader options go here
                     }
                 },
                 {
@@ -47,8 +44,12 @@ module.exports = [
             }
         },
         devServer: {
+            contentBase: './public/public-spa/dist/',
             historyApiFallback: true,
-            noInfo: true
+            noInfo: true,
+            hot: true,
+            open: true,
+            port: 8095
         },
         performance: {
             hints: false
@@ -56,13 +57,14 @@ module.exports = [
         devtool: '#eval-source-map'
     },
     {
+        name: 'config:admin',
         entry: {
             public : './resources/js/admin-spa/main.js',
         },
         output: {
-            path: path.resolve(__dirname, './public/admin-spa/dist/'),
-            filename: '[name].build.js',
-            chunkFilename: "admin.[name].chunk.js"
+            path: path.resolve(__dirname, './public/admin-spa/dist'),
+            publicPath: './public/admin-spa/dist/',
+            filename: 'admin.build.js'
         },
         module: {
             rules: [
@@ -71,13 +73,9 @@ module.exports = [
                     loader: 'vue-loader',
                     options: {
                         loaders: {
-                            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-                            // the "scss" and "sass" values for the lang attribute to the right configs here.
-                            // other preprocessors should work out of the box, no loader config like this necessary.
                             'scss': 'vue-style-loader!css-loader!sass-loader',
                             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
                         }
-                        // other vue-loader options go here
                     }
                 },
                 {
@@ -100,8 +98,12 @@ module.exports = [
             }
         },
         devServer: {
+            contentBase: './public/admin-spa/dist/',
             historyApiFallback: true,
-            noInfo: true
+            noInfo: true,
+            hot: true,
+            open: true,
+            port: 8096
         },
         performance: {
             hints: false
@@ -110,11 +112,30 @@ module.exports = [
     }
 ];
 
+if (process.env.NODE_ENV === 'development-admin') {
+    for (const project of configs) {
+        if(project.name === 'config:admin'){
+            module.exports = project;
+        }
+    }
+}
+
+if (process.env.NODE_ENV === 'development-public') {
+    for (const project of configs) {
+        if(project.name === 'config:public'){
+            module.exports = project;
+        }
+    }
+}
+
+if (process.env.NODE_ENV === 'development') {
+    module.exports = configs;
+}
+
 if (process.env.NODE_ENV === 'production') {
-    for (const config of module.exports) {
-        config.devtool = '#source-map'
-        // http://vue-loader.vuejs.org/en/workflow/production.html
-        config.plugins = (config.plugins || []).concat([
+    for (const project of configs) {
+        project.devtool = '#source-map'
+        project.plugins = (project.plugins || []).concat([
             new webpack.DefinePlugin({
                 'process.env': {
                     NODE_ENV: '"production"'
@@ -131,9 +152,8 @@ if (process.env.NODE_ENV === 'production') {
             }),
             new webpack.LoaderOptionsPlugin({
                 minimize: true
-            }),
-            new webpack.optimize.AggressiveMergingPlugin()
-
+            })
         ])
+        module.exports = configs;
     }
 }
