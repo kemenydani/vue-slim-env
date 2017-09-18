@@ -47,7 +47,7 @@ var configs = [
             contentBase: './public/public-spa/',
             historyApiFallback: {
                 rewrites: [
-                    { from: /^\/$/, to: 'build.html' },
+                    { from: /^\/$/, to: 'index.html' },
                 ],
             },
             noInfo: true,
@@ -67,7 +67,7 @@ var configs = [
         },
         output: {
             path: path.resolve(__dirname, './public/admin-spa/dist'),
-            publicPath: './public/admin-spa/dist/',
+            publicPath: './',
             filename: 'admin.build.js'
         },
         module: {
@@ -105,7 +105,7 @@ var configs = [
             contentBase: './public/admin-spa/',
             historyApiFallback: {
                 rewrites: [
-                    { from: /^\/$/, to: 'build.html' },
+                    { from: /^\/$/, to: 'index.html' },
                 ],
             },
             noInfo: true,

@@ -22,15 +22,26 @@ $app->options('/{routes:.+}', function (Request $request, Response $response, $a
 $app->get('/', function (Request $request, Response $response) {
     //$response->getBody()->write("Home");
     //return $response;
-    echo file_get_contents("./admin-spa/index.html");
-    return $response;
+
+
+    $contents =  file_get_contents("./public-spa/index.html");
+
+    echo str_replace("<base href=\"/\" />", "<base href=\"./public/public-spa/\" />", $contents);
+
 });
 
 $app->get('/admin/', function (Request $request, Response $response) {
     //$response->getBody()->write("Home");
     //return $response;
-    echo file_get_contents("./admin-spa/index.html");
-    return $response;
+
+    $contents =  file_get_contents("./admin-spa/index.html");
+
+    //$contents =  file_get_contents("./admin-spa/index.html");
+
+    echo str_replace("<base href=\"/\" />", "<base href=\"./public/admin-spa/\" />", $contents);
+
+    echo $contents;
+
 });
 
 $app->group('/api/', function () {
