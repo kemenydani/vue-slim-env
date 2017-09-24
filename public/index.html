@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="/auth" method="POST">
+
+        <div class="field">
+           <label>Username:</label>
+            <input name="username" value="sno" type="text" placeholder="username">
+        </div>
+
+        <div class="field">
+            <label>Password:</label>
+            <input name="password" value="admin" type="text" placeholder="password">
+        </div>
+
+        <div class="field">
+            <label>Remember:</label>
+            <input name="remember" type="checkbox">
+        </div>
+
+        <button type="submit">Login</button>
+        <a href="/logout"><button type="button">Logout</button></a>
+
+    </form>
+
+</body>
+</html>
