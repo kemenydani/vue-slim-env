@@ -69,13 +69,15 @@ class DB extends \PDO{
         return false;
     }
 
-    public static function update($table, $params, $key){
+    public static function update($table, $params, $key, $id){
 
         $table = DB::_PREFIX_ . $table;
 
+        //var_dump($table, $params, $key); die();
+
         $params = (array)$params;
-        $id = $params[$key];
-        unset($params[$key]);
+        //$id = $params[$key];
+        //unset($params[$key]);
 
         $names = "";
 

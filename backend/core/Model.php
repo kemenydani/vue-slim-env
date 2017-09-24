@@ -13,8 +13,7 @@ abstract class Model {
 
     public function __call($methodName, $arguments)
     {
-
-        $propName = strtolower(substr($methodName, 3));
+        $propName = self::underScorize(substr($methodName, 3));
 
         $action = substr($methodName, 0, 3);
 
@@ -24,6 +23,15 @@ abstract class Model {
         if($action === 'set'){
             $this->setProperty($propName, $arguments[0]);
         }
+    }
+
+    public static function underScorize($input) {
+        preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
+        $ret = $matches[0];
+        foreach ($ret as &$match) {
+            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        }
+        return implode('_', $ret);
     }
 
     public function setProperty($propName, $propValue, $silent = false)
@@ -71,7 +79,6 @@ abstract class Model {
 
     public function getChangedProps()
     {
-
         $changedProps = [];
 
         foreach($this->changeLog as $propName)
@@ -83,7 +90,6 @@ abstract class Model {
 
     public static function create($props = [])
     {
-
         $model = new static();
 
         foreach($props as $propName => $propValue)
@@ -129,9 +135,16 @@ abstract class Model {
         return json_encode($modelPropCollection, true);
     }
 
-    static function find($uniqueKey)
+    public static function getOne($where)
     {
-        $result = DB::instance()->find(self::getTableName(), self::getUniqueKey(), $uniqueKey);
+        $result = DB::instance()->g(self::getTableName(), self::getUniqueKey(), $uniqueKey);
+    }
+
+    public static function find($uniqueValue, $uniqueKey = null)
+    {
+        $uniqueKey = $uniqueKey === null ? self::getUniqueKey() : $uniqueKey;
+
+        $result = DB::instance()->find(self::getTableName(), $uniqueKey, $uniqueValue);
 
         if($result){
             return self::create($result);
@@ -152,8 +165,6 @@ abstract class Model {
         //return $ChildClass->hasConstant('UNIQUE_KEY') ? $ChildClass->getConstant('UNIQUE_KEY') : self::DEFAULT_UNIQUE_KEY;
     }
 
-/*
-
     //KEEP
     public function exitsInDB()
     {
@@ -168,7 +179,7 @@ abstract class Model {
         {
             if($this->exitsInDB())
             {
-                $db_model_id = DB::instance()->update(self::getTableName(), $this->getChangedProps(), self::getUniqueKey());
+                $db_model_id = DB::instance()->update(self::getTableName(), $this->getChangedProps(), self::getUniqueKey(), self::getProperty(self::getUniqueKey()));
             }
             else
             {
@@ -179,7 +190,7 @@ abstract class Model {
             {
                 if(!array_key_exists(self::getUniqueKey(), $this->props))
                 {
-                    $this->props[self::getUniqueKey()] = $model_id;
+                    $this->props[self::getUniqueKey()] = $db_model_id;
                 }
                 $this->clearChangeLog();
                 return $db_model_id;
@@ -188,6 +199,7 @@ abstract class Model {
         }
     }
 
+/*
     public static function find($id){
 
         $query = DB::instance()->query("SELECT * FROM " .self::getTableName()." WHERE ".self::getUniqueKey()." = ".$id." LIMIT 1");

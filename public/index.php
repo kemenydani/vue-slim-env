@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 error_reporting(E_ALL);
 
 date_default_timezone_set('Europe/London');
@@ -19,15 +21,36 @@ $app->options('/{routes:.+}', function (Request $request, Response $response, $a
     return $response;
 });
 
+$app->post('/auth', function (Request $request, Response $response) {
+
+    $password = $request->getParsedBody()['password'];
+    $username = $request->getParsedBody()['username'];
+    $remember = $request->getParsedBody()['remember'];
+
+    $remember = isset($remember) ? true : false;
+
+    User::login($username, $password, $remember);
+
+    return $response->withRedirect('/');
+});
+
+$app->get('/logout', function (Request $request, Response $response) {
+
+    $user = User::auth();
+    $user->logout();
+
+    return $response->withRedirect('/');
+});
+
 $app->get('/', function (Request $request, Response $response) {
-    //$response->getBody()->write("Home");
-    //return $response;
 
+    if(User::auth()){
+        echo 'logged' . User::auth()->getUsername();
+    } else {
+        echo 'not logged';
+    };
 
-    $contents =  file_get_contents("./public-spa/index.html");
-
-    echo str_replace("<base href=\"/\" />", "<base href=\"./public/public-spa/\" />", $contents);
-
+    echo file_get_contents("index.html");
 });
 
 $app->get('/admin/', function (Request $request, Response $response) {
