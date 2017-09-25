@@ -12,7 +12,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 use models\User as User;
-
+use core\Auth as Auth;
 //var_dump($user);
 
 $app = new \Slim\App;
@@ -29,6 +29,12 @@ $app->post('/auth', function (Request $request, Response $response) {
 
     $remember = isset($remember) ? true : false;
 
+    $User = User::find($username, 'username');
+
+    if($User){
+        $user
+    }
+
     User::login($username, $password, $remember);
 
     return $response->withRedirect('/');
@@ -36,7 +42,7 @@ $app->post('/auth', function (Request $request, Response $response) {
 
 $app->get('/logout', function (Request $request, Response $response) {
 
-    $user = User::auth();
+    $user = Auth::user();
     $user->logout();
 
     return $response->withRedirect('/');
@@ -44,8 +50,8 @@ $app->get('/logout', function (Request $request, Response $response) {
 
 $app->get('/', function (Request $request, Response $response) {
 
-    if(User::auth()){
-        echo 'logged' . User::auth()->getUsername();
+    if(Auth::user()){
+        echo 'logged' . Auth::user()->getUsername();
     } else {
         echo 'not logged';
     };

@@ -11,37 +11,38 @@ class User extends Model
 {
     public static $_UNIQUE = 'id';
 
-    public static function auth()
-    {
-        // If the session exists return the user having that id
-        if(Session::exists('userId'))
-        {
-            return self::find(Session::get('userId'));
-        }
-        // If there is no session, maybe the user just entered the page and has an unexpired remember_token
-        else if(Cookie::exists('user'))
-        {
-            $user = self::find(Cookie::get('user'), 'remember_token');
-            /**
-             * If we find the user who has this remember token, do the login process
-             * The login process will create a session, so on the next auth() call we will have the session
-             */
-            if($user)
-            {
-                $user->login($user->getUsername(), $user->getPassword(), true);
-            }
-            // If there is no session and no cookie containing a remember_token, return false, user is unauthorized
-            return $user;
-        }
-        return false;
-    }
-
     public function logout()
     {
         Session::delete('userId');
         Cookie::delete('user');
     }
 
+    public function signIn($password, $remember = false)
+    {
+        if(password_verify($password , $this->getPassword()))
+        {
+            if($remember){
+
+                $remember_token = Hash::unique();
+
+                if(!$this->getRememberToken())
+                {
+                    $this->setRememberToken($remember_token);
+                    $this->save();
+                }
+                else
+                {
+                    $remember_token = $this->getRememberToken();
+                }
+
+                Session::put('userId', $this->getId());
+                Cookie::put('user', $remember_token, 604800);
+            }
+            return $this;
+        }
+        return false;
+    }
+/*
     public static function login($username, $password, $remember = false)
     {
         $user = self::find($username, 'username');
@@ -73,7 +74,7 @@ class User extends Model
         }
         return false;
     }
-
+*/
     public static function verify_password($password, $prediction)
     {
         //return password_verify($prediction, $password);
