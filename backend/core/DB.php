@@ -42,8 +42,8 @@ class DB extends \PDO{
         return false;
     }
 
-    public function all($table){
-
+    public function all($table, $where = null){
+        // TODO: where params build
         $table = DB::_PREFIX_ . $table;
 
         $query = DB::instance()->query("SELECT * FROM " . $table);
