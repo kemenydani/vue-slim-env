@@ -13,9 +13,15 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 use models\User as User;
 use core\Auth as Auth;
-//var_dump($user);
 
-$app = new \Slim\App;
+$configuration = [
+    'settings' => [
+        'displayErrorDetails' => true,
+    ],
+];
+$c = new \Slim\Container($configuration);
+
+$app = new \Slim\App($c);
 
 $app->options('/{routes:.+}', function (Request $request, Response $response, $args) {
     return $response;
@@ -32,10 +38,8 @@ $app->post('/auth', function (Request $request, Response $response) {
     $User = User::find($username, 'username');
 
     if($User){
-        $user
+        $User->login($password, $remember);
     }
-
-    User::login($username, $password, $remember);
 
     return $response->withRedirect('/');
 });
@@ -60,22 +64,23 @@ $app->get('/', function (Request $request, Response $response) {
 });
 
 $app->get('/admin/', function (Request $request, Response $response) {
-    //$response->getBody()->write("Home");
-    //return $response;
 
-    $contents =  file_get_contents("./admin-spa/index.html");
+    $response->getBody()->write("Home");
+    return $response;
 
     //$contents =  file_get_contents("./admin-spa/index.html");
 
-    echo str_replace("<base href=\"/\" />", "<base href=\"./public/admin-spa/\" />", $contents);
+    //$contents =  file_get_contents("./admin-spa/index.html");
 
-    echo $contents;
+    //echo str_replace("<base href=\"/\" />", "<base href=\"./public/admin-spa/\" />", $contents);
 
+    //echo $contents;
 });
+
+
 
 $app->group('/api/', function () {
 
-    // Get All Customers
     $this->get('users', function(Request $request, Response $response){
 
         try{
@@ -88,7 +93,8 @@ $app->group('/api/', function () {
         } catch(PDOException $e){
             echo '{"error": {"text": '.$e->getMessage().'}';
         }
-    });
+
+    })->add( new \middlewares\AuthMiddleware() )->add( new \middlewares\RoleMiddleware('api.user.list') );
 
 })->add(function (Request $request, Response $response, $next) {
 
@@ -98,23 +104,6 @@ $app->group('/api/', function () {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
-})->add(function (Request $request, Response $response, $next) {
-
-    $authorized = true;
-
-    //$token = $request->getHeader('Authorization');
-    //var_dump($token);
-
-    if ($authorized) {
-        // authorized, call next middleware
-        return $next($request, $response);
-    }
-
-    // not authorized, don't call next middleware and return our own response
-    $response->getBody()->write("Unauthorized");
-
-    return $response
-        ->withStatus(403);
 });
 
 $app->run();

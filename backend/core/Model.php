@@ -160,9 +160,7 @@ abstract class Model {
 
     public static function getUniqueKey()
     {
-        return static::$_UNIQUE ? static::$_UNIQUE : self::DEFAULT_UNIQUE_KEY;
-        //$ChildClass = (new \ReflectionClass(static::class));
-        //return $ChildClass->hasConstant('UNIQUE_KEY') ? $ChildClass->getConstant('UNIQUE_KEY') : self::DEFAULT_UNIQUE_KEY;
+        return isset(static::$_UNIQUE) ? static::$_UNIQUE : self::DEFAULT_UNIQUE_KEY;
     }
 
     //KEEP
@@ -171,7 +169,6 @@ abstract class Model {
         //TODO: check if id is not empty because it may happen that I will predefine all props without value, and this will fail
         return $this->getProperty(self::getUniqueKey()) ? true : false;
     }
-
     //KEEP
     public function save()
     {

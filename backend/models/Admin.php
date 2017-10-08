@@ -6,13 +6,16 @@ use core\Model as Model;
 use core\Session as Session;
 use core\Cookie as Cookie;
 use core\Hash as Hash;
+use core\Auth as Auth;
 
-class User extends Model
+class Admin extends Model
 {
+    public static $_UNIQUE = 'id';
+
     public function logout()
     {
-        Session::delete('userId');
-        Cookie::delete('user');
+        Session::delete('adminId');
+        Cookie::delete('admin');
     }
 
     public function login($password, $remember = false)
@@ -35,9 +38,10 @@ class User extends Model
                     {
                         $remember_token = $this->getRememberToken();
                     }
-                    Cookie::put('user', $remember_token, 604800);
+
+                    Cookie::put('admin', $remember_token, 604800);
                 }
-                Session::put('userId', $this->getId());
+                Session::put('adminId', $this->getId());
                 return true;
             }
         }
@@ -47,11 +51,6 @@ class User extends Model
     public static function hasRole($role)
     {
 
-    }
-
-    public static function verify_password($password, $prediction)
-    {
-        //return password_verify($prediction, $password);
     }
 
 }

@@ -4,12 +4,14 @@
     "require": {
         "slim/slim": "^3.8",
         "phpmailer/phpmailer": "^6.0",
-        "smarty/smarty": "^3.1"
+        "smarty/smarty": "^3.1",
+        "tuupola/slim-jwt-auth": "3.0.0-rc.2"
     },
     "autoload": {
         "psr-4": {
             "core\\": "backend/core/",
             "controllers\\": "backend/controllers/",
+            "middlewares\\": "backend/middlewares/",
             "configs\\": "backend/configs/",
             "models\\": "backend/models/"
         }
